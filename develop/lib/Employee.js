@@ -1,18 +1,24 @@
 // TODO: Write code to define and export the Employee class
 
-var inquirer = require('inquirer');
+class Employee {
+  constructor(name, id, email) {
+    this.name = name;
+    this.id = id;
+    this.email = email;
+  }
 
-inquirer
-  .prompt([
-    /* Pass your questions in here */
-  ])
-  .then(answers => {
-    // Use user feedback for... whatever!!
-  })
-  .catch(error => {
-    if(error.isTtyError) {
-      // Prompt couldn't be rendered in the current environment
-    } else {
-      // Something else when wrong
-    }
-  });
+  getName() {
+    return this.name;
+  }
+  getID() {
+    return this.id;
+  }
+  getEmail() {
+    return this.id;
+  }
+  getRole() {
+    return this.id;
+  }
+}
+
+module.export = Employee;
