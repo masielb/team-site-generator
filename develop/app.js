@@ -10,125 +10,127 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+// Create empty array for new members created by the CLI
+const groupMembers = [];
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-function employeeInformation() {
+// Initial function from which the user will choose which employee type to create
+function employeeQuestion() {
     inquirer.prompt([
-     {
-       type: "list",
-       message: "What type of employee would you like to input",
-       name: "name",
-       choices: ["Manager", "Engineer", "Intern"],
-     },
-   ]).then(val => {
-     if (val.name === "Manager") {
-       managerInformation();
-     } else if (val.name === "Engineer") {
-       engineerInformation()
-     } else if (val.name === "Intern") {
-       internInformation();
-     };
-   });
-};
-
-function managerInformation() {
-    return inquirer.prompt([
         {
-        type: "input",
-        message: "What is your manager's name?",
-        name: "name"
+            type: "list",
+            message: "Which employee are you going to input?",
+            name: "name",
+            choices: ["Intern", "Manager", "Engineer", "Create Webpage"]
         },
-        {
-        type: "input",
-        message: "What is your manager's id?",
-        name: "id",
-        },
-        {
-        type: "input",
-        message: "What is your manager's email?",
-        name: "email"
-        },
-        {
-        type: "input",
-        message: "What is your manager's office number",
-        name: "number",
-        },
-    ]).then(function(answer) {
-        let manager = new Manager(answer.name, answer.id, answer.email, answer.number)
-        team.push(manager);
-
-        employeeInformation()
-    })
-};
-
-function engineerInformation() {
-    return inquirer.prompt([
-      {
-        type: "input",
-        message: "What is your engineer's name?",
-        name: "name"
-      },
-      {
-        type: "input",
-        message: "What is your engineer's ID?",
-        name: "id",
-      },
-      {
-        type: "input",
-        message: "What is your engineer's email?",
-        name: "email"
-      },
-      {
-        type: "input",
-        message: "What is your engineer's GitHub username?",
-        name: "GitHub",
-      },
-    ]).then(function(answer) {
-      let engineer = new Engineer(answer.name, answer.id, answer.email, answer.GitHub)
-      team.push(engineer);
-  
-      employeeInformation()
-    })
-};
-
-function internInformation() {
-    return inquirer.prompt([
-      {
-        type: "input",
-        message: "What is your intern's name?",
-        name: "name"
-      },
-      {
-        type: "input",
-        message: "What is your intern's ID?",
-        name: "id",
-      },
-      {
-        type: "input",
-        message: "What is your intern's email?",
-        name: "email"
-      },
-      {
-        type: "input",
-        message: "What is your intern's school",
-        name: "school",
-      },
-    ]).then(function(answer) {
-      let intern = new Intern(answer.name, answer.id, answer.email, answer.school)
-      team.push(intern);
-  
-      employeeInformation()
-    })
-};
-
-function generateHTML(fileName, data) {
-    fs.writeFile(fileName, data, "utf8", function (err) {
-      if (err) {
-        throw err;
-      }
-      console.log("You have successfully written your Employee Summary");
+    ]).then(role => {
+        if (role.name === "Intern") {
+            internQuestions();
+        } else if (role.name === "Manager") {
+            managerQuestions();
+        } else if (role.name === "Engineer") {
+            engineerQuestions();
+        } else if (role.name === "Create Employee Site") {
+            createWebpage(outputPath, render(groupMembrs));
+        };
     });
 };
-  
-employeeInformation();
+
+function internQuestions() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the intern's name?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is the intern's ID?",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "What is the intern's company e-mail?",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "What is the intern's school?",
+            name: "school"
+        }
+    ]).then(answers => {
+        let intern = new Intern(answers.name, answers.id, answers.email, answers.school);
+        groupMembers.push(intern);
+
+        employeeQuestion();
+    });
+};
+
+function managerQuestions() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the manager's name?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is the manager's ID?",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "What is the manager's company e-mail?",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "What is the manager's office number?",
+            name: "officeNumber"
+        }
+    ]).then(answers => {
+        let manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber);
+        groupMembers.push(manager);
+
+        employeeQuestion();
+    });
+};
+
+function engineerQuestions() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the engineer's name?",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "What is the engineer's ID?",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "What is the engineer's company e-mail?",
+            name: "email"
+        },
+        {
+            type: "input",
+            message: "What is the engineer's GitHub?",
+            name: "github"
+        }
+    ]).then(answers => {
+        let engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
+        groupMembers.push(engineer);
+
+        employeeQuestion();
+    });
+};
+
+function createWebpage(fileName, data) {
+    fs.writeFile(fileName, data, "utf8", err => {
+        if (err) throw err;
+
+        console.log("Your file has been created.");
+    });
+};
+
+employeeQuestion();
