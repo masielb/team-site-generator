@@ -34,7 +34,7 @@ In order to text this program, use the following commands:
 These commands will run the test.js files within the test directory.
 
 ## Application Demo
-
+![application demo](develop/fullvideo.gif)
 
 ## Contact Information
 * Masiel Bautista
