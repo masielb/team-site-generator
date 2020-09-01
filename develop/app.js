@@ -29,12 +29,13 @@ function employeeQuestion() {
             managerQuestions();
         } else if (role.name === "Engineer") {
             engineerQuestions();
-        } else if (role.name === "Create Employee Site") {
-            createWebpage(outputPath, render(groupMembrs));
+        } else if (role.name === "Create Webpage") {
+            createWebpage(outputPath, render(groupMembers));
         };
     });
 };
 
+// Function housing prompts for interns
 function internQuestions() {
     return inquirer.prompt([
         {
@@ -65,6 +66,7 @@ function internQuestions() {
     });
 };
 
+// Function housing prompts for manager
 function managerQuestions() {
     return inquirer.prompt([
         {
@@ -95,6 +97,7 @@ function managerQuestions() {
     });
 };
 
+// Function housing prompts for engineers
 function engineerQuestions() {
     return inquirer.prompt([
         {
@@ -125,6 +128,7 @@ function engineerQuestions() {
     });
 };
 
+// Function used to create the team.html
 function createWebpage(fileName, data) {
     fs.writeFile(fileName, data, "utf8", err => {
         if (err) throw err;
@@ -133,4 +137,5 @@ function createWebpage(fileName, data) {
     });
 };
 
+// Call function to itialize CLI program
 employeeQuestion();
